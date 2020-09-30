@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Fake News Detection </title>
+    <link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div>
+        <h3 style="padding-left:1px"> Enter Query </h3>
+        <form action="{{ url_for('check') }}" method="post" style="padding-right:5px">
+            <input type="text" name="query" placeholder="query" required="required" style="height:50px"/>
+            <button type="submit" class="btn btn-primary btn-block btn-large" style="height:50px">Check</button>
+            <p id="result"></p>
+        </form>
+        <center style="padding-left:1px">{{ prediction_text }}</center>
+        <center style="padding=-left:1px">
+        {% if citation == "No citation" %}
+            {% block content %}
+        	No citations found
+            {% endblock content %}
+        {% else %}
+        <h4 style="padding-left:1px">Check citations here.</h3> <br>
+        	{% for cits in citation %}
+       	 <a href="{{ cits[1] }}" target="_blank"> {{ cits[0] }} </a> <br>
+        	{% endfor %}
+        {% endif %}
+        </center>
+    </div>
+    
+
+</body>
+</html>
+
