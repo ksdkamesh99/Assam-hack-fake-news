@@ -19,9 +19,11 @@ def checkfor(query):
 		return "Untrusted"
 @app.route('/')
 def home():
-	return render_template('index.html')
 
-@app.route('/check', methods=['POST'])
+	if request.method=='GET':
+		return render_template('index.html')
+
+@app.route('/check', methods=['POST','GET'])
 def check():
 	if request.method == 'POST':
 		query = request.form['query']
@@ -32,8 +34,11 @@ def check():
 			prediction="Probably Real"
 		else :
 			prediction="Argueable"
-	print(res)
-	return render_template('index.html', prediction_text='The news is {}'.format(prediction), citation = citations )
+		print(res)
+		return render_template('index.html', prediction_text='The news is {}'.format(prediction), citation = citations )
+	else:
+		return render_template('index.html')
+
 
 @app.route("/checkjs", methods=["POST","GET"])
 def checkjs():
@@ -60,10 +65,11 @@ def checkjs():
 	
 @app.route("/checkvalidation", methods=["POST","GET"])
 def checkval():
+
 	query = request.args.get("query")
 	valid=checkfor(query)
 	print(valid)
 	response = make_response(jsonify({"validation":valid}))
 	return response
 if __name__ == "__main__":
-	app.run(debug = True,host='127.0.0.1', port=5000)
+	app.run(debug = False)
